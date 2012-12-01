@@ -44,3 +44,6 @@ npm-debug.log
 
 !.gitignore
 *~
+
+# Stylus compile dir
+public/styl/
