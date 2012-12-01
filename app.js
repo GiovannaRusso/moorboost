@@ -8,16 +8,10 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
+  , stylus = require('stylus')
   , nib = require('nib');
 
 var app = express();
-
-function compileStylus(str, path) {
-  return stylus(str)
-    .set('filename', path)
-    .set('compress', true)
-    .use(nib())
-}
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -30,10 +24,16 @@ app.configure(function(){
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
   app.use(app.router);
-  app.use(require('stylus').middleware({
+  app.use(stylus.middleware({
       src: __dirname + '/views'
     , dest: __dirname + '/public'
-    , compile: compileStylus
+    , compile: function(str, path) {
+        return stylus(str)
+          .set('filename', path)
+          .set('compress', true)
+          .use(nib())
+          .import('nib')
+      }
   }));
   app.use(express.static(path.join(__dirname, 'public')));
 });

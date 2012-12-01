@@ -46,4 +46,4 @@ npm-debug.log
 *~
 
 # Stylus compile dir
-public/styl/
+public/styl/*.css
